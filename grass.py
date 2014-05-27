@@ -17,19 +17,9 @@ __author__ = 'shomah4a'
 import sys
 import os
 
-try:
-
-    from pypy.rlib.jit import JitDriver
-    jitdriver = JitDriver(greens=['function', 'arg'],
-                          reds=['env'])
-except:
-
-    class jitdriver:
-
-        @staticmethod
-        def jit_merge_point(**kw):
-            pass
-
+from rpython.rlib.jit import JitDriver
+jitdriver = JitDriver(greens=['function', 'arg'],
+                      reds=['env'])
 
 
 def is_n(st):
@@ -179,7 +169,7 @@ class Out(StackItem):
         os.write(1, chr(arg.value))
 
         return arg
-    
+
 
 
 class In(StackItem):
@@ -203,7 +193,7 @@ class Char(StackItem):
     def __init__(self, val):
 
         self.value = val
-        
+
 
     def apply(self, arg):
 
@@ -250,7 +240,7 @@ def parse_prog(inp, env):
 
     while left:
         n = left[0]
-        
+
         if is_w(n):
             f, left = parse_abs(left, env)
             env.append(f)
@@ -329,7 +319,7 @@ def target(*args):
 
 
 def jitpolicy(driver):
-    from pypy.jit.codewriter.policy import JitPolicy
+    from rpython.jit.codewriter.policy import JitPolicy
     return JitPolicy()
 
 
@@ -337,7 +327,3 @@ def jitpolicy(driver):
 if __name__ == '__main__':
 
     main(sys.argv)
-
-    
-
-
